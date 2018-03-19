@@ -5,12 +5,13 @@
                   :exclusions [joda-time]]
                  [re-frame "0.10.2"]
                  [cljs-ajax "0.7.2"]
-                 [secretary "1.2.3"]
+                 [funcool/bide "1.6.0"]
                  [reagent-utils "0.2.1"]
                  [reagent "0.7.0"]
                  [org.clojure/clojurescript "1.9.946"]
                  [org.clojure/clojure "1.8.0"]
                  [selmer "1.11.1"]
+                 [com.taoensso/tufte "1.3.0"]
                  [markdown-clj "1.0.1"]
                  [ring-middleware-format "0.7.2"]
                  [ring/ring-core "1.6.2"]
@@ -83,13 +84,12 @@
 
   :uberjar-exclusions [#"public/README.md" #"public/cards.html"]
   :clean-targets ^{:protect false}
-  [:target-path [:cljsbuild :builds :app :compiler :output-dir] [:cljsbuild :builds :app :compiler :output-to]]
+  [:target-path :java-source-paths [:cljsbuild :builds :app :compiler :output-dir] [:cljsbuild :builds :app :compiler :output-to]]
   :figwheel
   {:http-server-root "public"
    :nrepl-port       7002
    :css-dirs         ["resources/public/css"]
    :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
-
 
   :profiles
   {:uberjar       {:jvm-opts ["-server" "-Dconf=config-prod.edn"]
@@ -124,6 +124,7 @@
                             [binaryage/devtools "0.9.7"]
                             [figwheel-sidecar "0.5.14"]
                             [org.clojure/tools.nrepl "0.2.13"]
+                            [org.clojure/tools.namespace "0.2.11"]
                             [com.cemerick/piggieback "0.2.2"]
                             [sablono "0.8.1"]]
            :plugins        [[com.jakemccrary/lein-test-refresh "0.14.0"]
@@ -142,7 +143,6 @@
                :optimizations :none
                :pretty-print  true}}]}
 
-           :prep-tasks     ["build-contracts" "javac"]
            :doo            {:build "test"}
            :source-paths   ["env/dev/clj" "test/clj"]
            :resource-paths ["env/dev/resources"]
